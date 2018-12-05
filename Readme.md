@@ -27,7 +27,7 @@ docker-compose up -d
 
  You must to create your app in your folder, usint vue-cli (https://cli.vuejs.org/)
 
- ``
+ ```
  cd Server
  cd vue
  vue create myapp
@@ -49,9 +49,7 @@ volumes:
 #### 2: Run Build Vue App
 
 
-```
-npm run build
-```
+``` npm run build ```
 
 ## Todo
 
