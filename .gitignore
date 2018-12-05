@@ -1,0 +1,11 @@
+
+
+## GitIgnore
+
+.DS_Store
+docker 
+proxy 
+laravel
+vue
+wordpress
+webs

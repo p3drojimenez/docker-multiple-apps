@@ -1,0 +1,107 @@
+version: '3.7'
+
+services:
+
+  proxy:
+    container_name: proxy
+    image: neilpang/nginx-proxy
+    restart: always
+    network_mode: bridge
+    ports:
+    - 80:80
+    - 443:443
+    volumes:
+      -  /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./proxy/certs:/etc/nginx/certs
+      - ./proxy/acme:/acmecerts
+      - ./proxy/conf.d:/etc/nginx/conf.d
+  mysql:
+    image: mariadb:10
+    network_mode: bridge
+    container_name: server-db
+    restart: on-failure
+    volumes:
+    - ./docker/volumes/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: qwertyuiop
+
+  php:
+    container_name: php
+    network_mode: bridge
+    image: php:7-fpm
+    volumes:
+      - ./laravel/app1:/code  
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.8
+    network_mode: bridge
+    container_name: phpmyadmin
+    restart: on-failure
+    environment:
+          - PMA_ARBITRARY=1
+          - PMA_HOST=mysql
+    volumes:
+      - /sessions
+    ports:
+      - 8181:80
+    links:
+    - mysql
+
+# Wordpress
+  wordpress:
+    image: wordpress
+    network_mode: bridge
+    container_name: wordpress-wp
+    restart: on-failure
+    volumes:
+    - ./wordpress/plugins:/var/www/html/wp-content/plugins/
+    - ./wordpress/themes:/var/www/html/wp-content/themes/
+    environment:
+      WORDPRESS_DB_NAME: wordpress-db
+      VIRTUAL_HOST: wordpresstheme.docker
+    depends_on:
+    - mysql
+    links:
+    - mysql
+
+
+# # Laravels
+
+  laravel01:
+    image: nginx
+    network_mode: bridge
+    container_name: app01-laravel
+    volumes:
+      - ./laravel/app1:/code
+      - ./laravel/app1-config:/etc/nginx/conf.d/
+    environment:
+      VIRTUAL_HOST: laravel.docker
+    depends_on:
+      - mysql
+    links:
+      - php
+
+ 
+
+# Vuesjs
+
+  vue-app-01:
+    image: nginx
+    network_mode: bridge
+    container_name: vue-app-01
+    volumes:
+      - ./vue/app1/dist:/usr/share/nginx/html/
+    environment:
+      VIRTUAL_HOST: vue.docker
+
+
+# Statics web ( HTML )
+
+  myapp:
+    image: nginx
+    network_mode: bridge
+    container_name: html01
+    volumes:
+      - ./webs:/usr/share/nginx/html/
+    environment:
+      VIRTUAL_HOST: html.docker
