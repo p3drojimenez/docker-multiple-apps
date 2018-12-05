@@ -32,7 +32,7 @@ docker-compose up -d
  cd vue
  vue create myapp
  
-  ``
+```
 
 ### Developent mode:
 
@@ -45,7 +45,6 @@ docker-compose up -d
 ```
 volumes:
       - ./vue/myapp/dist:/usr/share/nginx/html/
-
 ```
 #### 2: Run Build Vue App
 
@@ -56,4 +55,5 @@ npm run build
 
 ## Todo
 
- [] Fix multi Laravel apps 
+ [] Fix multi Laravel apps
+ [] Add Reactjs App
