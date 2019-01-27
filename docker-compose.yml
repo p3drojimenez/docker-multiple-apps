@@ -8,8 +8,8 @@ services:
     restart: always
     network_mode: bridge
     ports:
-    - 80:80
-    - 443:443
+    - 81:80
+    - 444:443
     volumes:
       -  /var/run/docker.sock:/tmp/docker.sock:ro
       - ./proxy/certs:/etc/nginx/certs
@@ -51,57 +51,76 @@ services:
   wordpress:
     image: wordpress
     network_mode: bridge
-    container_name: wordpress-wp
+    container_name: abogados-eyco
     restart: on-failure
     volumes:
     - ./wordpress/plugins:/var/www/html/wp-content/plugins/
     - ./wordpress/themes:/var/www/html/wp-content/themes/
+    - ./wordpress/abogados-eyco/uploads:/var/www/html/wp-content/uploads/
+    - ./logs:/var/log/apache2/
     environment:
-      WORDPRESS_DB_NAME: wordpress-db
-      VIRTUAL_HOST: wordpresstheme.docker
+      WORDPRESS_DB_NAME: abogados-eyco-db
+      VIRTUAL_HOST: abogados.eyco.es
     depends_on:
     - mysql
     links:
     - mysql
 
+#   goaccess:
+#     image: allinurl/goaccess
+#     network_mode: bridge
+#     container_name: goaccess3
+#     restart: on-failure
+#     volumes:
+#     - ./srv/goaccess/data:/srv/data
+#     - ./srv/goaccess/html:/srv/report
+#     - ./logs:/srv/logs      
+#     depends_on:
+#     - mysql
+#     links:
+#     - mysql
+#     ports: 
+#       - 7890:7890
 
-# # Laravels
+    
 
-  laravel01:
-    image: nginx
-    network_mode: bridge
-    container_name: app01-laravel
-    volumes:
-      - ./laravel/app1:/code
-      - ./laravel/app1-config:/etc/nginx/conf.d/
-    environment:
-      VIRTUAL_HOST: laravel.docker
-    depends_on:
-      - mysql
-    links:
-      - php
+# # # Laravels
+
+#   laravel01:
+#     image: nginx
+#     network_mode: bridge
+#     container_name: app01-laravel
+#     volumes:
+#       - ./laravel/app1:/code
+#       - ./laravel/app1-config:/etc/nginx/conf.d/
+#     environment:
+#       VIRTUAL_HOST: laravel.docker
+#     depends_on:
+#       - mysql
+#     links:
+#       - php
 
  
 
-# Vuesjs
+# # Vuesjs
 
-  vue-app-01:
-    image: nginx
-    network_mode: bridge
-    container_name: vue-app-01
-    volumes:
-      - ./vue/app1/dist:/usr/share/nginx/html/
-    environment:
-      VIRTUAL_HOST: vue.docker
+#   vue-app-01:
+#     image: nginx
+#     network_mode: bridge
+#     container_name: vue-app-01
+#     volumes:
+#       - ./vue/app1/dist:/usr/share/nginx/html/
+#     environment:
+#       VIRTUAL_HOST: vue.docker
 
 
-# Statics web ( HTML )
+# # Statics web ( HTML )
 
-  myapp:
-    image: nginx
-    network_mode: bridge
-    container_name: html01
-    volumes:
-      - ./webs:/usr/share/nginx/html/
-    environment:
-      VIRTUAL_HOST: html.docker
+#   myapp:
+#     image: nginx
+#     network_mode: bridge
+#     container_name: html01
+#     volumes:
+#       - ./webs:/usr/share/nginx/html/
+#     environment:
+#       VIRTUAL_HOST: html.docker
