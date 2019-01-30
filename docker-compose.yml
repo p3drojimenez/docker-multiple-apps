@@ -25,12 +25,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: qwertyuiop
 
-  php:
-    container_name: php
-    network_mode: bridge
-    image: php:7-fpm
-    volumes:
-      - ./laravel/app1:/code  
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:4.8
@@ -51,76 +45,17 @@ services:
   wordpress:
     image: wordpress
     network_mode: bridge
-    container_name: abogados-eyco
+    container_name: wordpress
     restart: on-failure
     volumes:
     - ./wordpress/plugins:/var/www/html/wp-content/plugins/
     - ./wordpress/themes:/var/www/html/wp-content/themes/
-    - ./wordpress/abogados-eyco/uploads:/var/www/html/wp-content/uploads/
-    - ./logs:/var/log/apache2/
+    - ./wordpress/web/uploads:/var/www/html/wp-content/uploads/
+
     environment:
-      WORDPRESS_DB_NAME: abogados-eyco-db
-      VIRTUAL_HOST: abogados.eyco.es
+      WORDPRESS_DB_NAME: wordpress-db
+      VIRTUAL_HOST: docker.pedrojimenez.info
     depends_on:
     - mysql
     links:
     - mysql
-
-#   goaccess:
-#     image: allinurl/goaccess
-#     network_mode: bridge
-#     container_name: goaccess3
-#     restart: on-failure
-#     volumes:
-#     - ./srv/goaccess/data:/srv/data
-#     - ./srv/goaccess/html:/srv/report
-#     - ./logs:/srv/logs      
-#     depends_on:
-#     - mysql
-#     links:
-#     - mysql
-#     ports: 
-#       - 7890:7890
-
-    
-
-# # # Laravels
-
-#   laravel01:
-#     image: nginx
-#     network_mode: bridge
-#     container_name: app01-laravel
-#     volumes:
-#       - ./laravel/app1:/code
-#       - ./laravel/app1-config:/etc/nginx/conf.d/
-#     environment:
-#       VIRTUAL_HOST: laravel.docker
-#     depends_on:
-#       - mysql
-#     links:
-#       - php
-
- 
-
-# # Vuesjs
-
-#   vue-app-01:
-#     image: nginx
-#     network_mode: bridge
-#     container_name: vue-app-01
-#     volumes:
-#       - ./vue/app1/dist:/usr/share/nginx/html/
-#     environment:
-#       VIRTUAL_HOST: vue.docker
-
-
-# # Statics web ( HTML )
-
-#   myapp:
-#     image: nginx
-#     network_mode: bridge
-#     container_name: html01
-#     volumes:
-#       - ./webs:/usr/share/nginx/html/
-#     environment:
-#       VIRTUAL_HOST: html.docker
