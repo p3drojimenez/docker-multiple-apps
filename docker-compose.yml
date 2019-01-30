@@ -8,8 +8,8 @@ services:
     restart: always
     network_mode: bridge
     ports:
-    - 81:80
-    - 444:443
+    - 80:80
+    - 443:443
     volumes:
       -  /var/run/docker.sock:/tmp/docker.sock:ro
       - ./proxy/certs:/etc/nginx/certs
