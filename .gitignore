@@ -1,5 +1,6 @@
 .DS_Store
-docker 
+docker
+.vscode 
 proxy 
 laravel
 vue
