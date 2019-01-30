@@ -55,6 +55,7 @@ services:
     environment:
       WORDPRESS_DB_NAME: wordpress-db
       VIRTUAL_HOST: docker.pedrojimenez.info
+      ENABLE_ACME: "true"
     depends_on:
     - mysql
     links:
